@@ -13,6 +13,10 @@
             .then(r => {
                 if (r.success) {
                     console.log(r.data);
+                    const tableBody = document.querySelector("table#tblTask tbody")
+                    tableBody.innerHTML = pg.getTableHTML(r.data);
+
+
                 } else {
                     console.error(r.message);
                 }
@@ -22,5 +26,14 @@
             })
 
 
+    }
+
+    getTableHTML(data) {
+        const wrapTr = (v) => `<tr>${v}</tr>`
+        const wrapTd = (v) => `<td>${v}</td>`
+        return data
+            .map((r, i) => `${wrapTd(i + 1)} ${wrapTd(r.taskDescription)} ${wrapTd(r.taskDate)}`)
+            .map(r => `${wrapTr(r)}`)
+            .join('');
     }
 }
