@@ -21,13 +21,13 @@
                 },
                 body: JSON.stringify(data)
             }
-            console.log(httpReq)
 
             fetch("/Task/PostTask", httpReq)
-                .then(resp => resp.json)
+                .then(resp => resp.json())
                 .then(r => {
                     if (r.success) {
                         console.log("Added Successfully");
+                        window.location = "/"
                     } else {
                         console.log(r.message);
                     }
