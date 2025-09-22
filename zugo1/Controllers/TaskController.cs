@@ -39,7 +39,45 @@ namespace zugo1.Controllers
             {
                 res = new { success = false, message = ex.Message };
             }
-            return Json(res);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetTasks()
+        {
+
+            object res;
+            List<Task> tasks = new List<Task>();
+            try
+            {
+                string connectionString = HomeController.GetConnectionString();
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlTransaction trans = conn.BeginTransaction();
+                    string insertSql = $@"Select * from Task";
+                    using (SqlCommand cmd = new SqlCommand(insertSql, conn, trans))
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+
+                            tasks.Add(new Task()
+                            {
+                                id = Convert.ToInt32(dr["id"]),
+                                taskDescription = dr["taskDescription"] == DBNull.Value ? "" : dr["taskDescription"].ToString(),
+                                taskDate = dr["taskDate"] == DBNull.Value ? "" : dr["taskDate"].ToString(),
+                            });
+                        }
+
+                    }
+                    trans.Commit();
+                }
+                res = new { success = true, data = tasks };
+            }
+            catch (Exception ex)
+            {
+                res = new { success = false, message = ex.Message };
+            }
+            return Json(res,JsonRequestBehavior.AllowGet);
         }
     }
 }
