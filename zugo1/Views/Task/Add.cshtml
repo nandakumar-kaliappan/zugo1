@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<main>
+
+
+    <div class="row">
+        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+            <h2 id="gettingStartedTitle">Add Task</h2>
+        </section>
+        <section class="col-md-4" aria-labelledby="librariesTitle">
+            <input type="hidden" name="id" />
+            <div class="elementDiv">
+                <label for="taskDescription">Task Description</label>
+                <input type="text" name="taskDescription" placeholder="Description" />
+            </div>
+            <div class="elementDiv">
+                <label for="taskDate">Task Date</label>
+                <input type="date" name="taskDate" placeholder="Date" />
+            </div>
+            <div class="elementDiv">
+                <button type="button"> Add </button>
+            </div>
+
+        </section>
+    </div>
+</main>
