@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewBag.controller = ViewContext.RouteData.Values["controller"].ToString();
+    ViewBag.action = ViewContext.RouteData.Values["action"].ToString();
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -8,6 +12,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
             @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
@@ -35,10 +40,21 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/common")
     @RenderSection("scripts", required: false)
-    @{
-        ViewBag.controller = ViewContext.RouteData.Values["contorller"].ToString();
-        ViewBag.action = ViewContext.RouteData.Values["action"].ToString();
-    }
+    <script>
+    let controller = "@ViewBag.controller";
+        //let controller ="Test"//
+    let action = "@ViewBag.action";
+    window.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+            //alert("Script loaded for " + controller)
+            loadRelevantFiles(controller);
+        }, 30)
+
+    })
+
+    </script>
+
 </body>
 </html>
