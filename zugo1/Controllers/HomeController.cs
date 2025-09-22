@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,7 +12,12 @@ namespace zugo1.Controllers
     {
         internal static string GetConnectionString()
         {
-            return $"Data Source=nandakumar;Intial Catalog=Test;User Id=sa;Password=selsel";
+            SqlConnectionStringBuilder cs = new SqlConnectionStringBuilder();
+            cs.DataSource = "nandakumar";
+            cs.InitialCatalog = "tasks";
+            cs.UserID = "sa";
+            cs.Password = "selsel";
+            return cs.ConnectionString;
         }
         public ActionResult Index()
         {

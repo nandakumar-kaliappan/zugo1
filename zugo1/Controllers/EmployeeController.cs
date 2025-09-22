@@ -12,21 +12,18 @@ namespace zugo1.Controllers
         // GET: Employee
         public ActionResult Index()
         {
-            string dbc = HomeController.GetConnectionString();
             try
             {
-                SqlConnectionStringBuilder cs = new SqlConnectionStringBuilder();
-                cs.DataSource = "nandakumar";
-                cs.InitialCatalog = "Test";
-                cs.UserID = "sa";
-                cs.Password = "selsel";
-                using (SqlConnection conn = new SqlConnection(cs.ConnectionString))
+
+                string dbc = HomeController.GetConnectionString();
+                using (SqlConnection conn = new SqlConnection(dbc))
                 {
                     conn.Open();
-                    using (SqlCommand cmd = new SqlCommand("select * from employee",conn))
+                    using (SqlCommand cmd = new SqlCommand("select * from employee", conn))
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
-                        while (dr.Read()) {
+                        while (dr.Read())
+                        {
 
                             string name = dr["name"].ToString();
                             string department = dr["department"].ToString();

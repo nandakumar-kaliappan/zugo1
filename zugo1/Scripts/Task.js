@@ -14,7 +14,28 @@
                 acc[i.name] = i.value;
                 return acc;
             }, {})
-            console.log( data)
+            const httpReq = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }
+            console.log(httpReq)
+
+            fetch("/Task/PostTask", httpReq)
+                .then(resp => resp.json)
+                .then(r => {
+                    if (r.success) {
+                        console.log("Added Successfully");
+                    } else {
+                        console.log(r.message);
+                    }
+                })
+                .catch(e => {
+                        console.error("Server Connection Error");
+                })
+
         })
 
     }
