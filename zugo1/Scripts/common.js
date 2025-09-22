@@ -1,6 +1,8 @@
-﻿function loadRelevantFiles(pageName) {
+﻿var pg;
+function loadRelevantFiles(pageName) {
     loadJs(`/Scripts/${pageName}.js`, () => {
-        let p = new page(pageName);
+        pg = new page(pageName);
+        pg.configureEvents();
     });
 }
 
