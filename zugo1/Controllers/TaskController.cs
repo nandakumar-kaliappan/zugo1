@@ -41,6 +41,33 @@ namespace zugo1.Controllers
             }
             return Json(res, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult DeleteTask(int id)
+        {
+
+            object res;
+            try
+            {
+                string connectionString = HomeController.GetConnectionString();
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlTransaction trans = conn.BeginTransaction();
+                    string insertSql = $@"Delete from task where id = {id}";
+                    using (SqlCommand cmd = new SqlCommand(insertSql, conn, trans))
+                    {
+                        cmd.ExecuteNonQuery();
+
+                    }
+                    trans.Commit();
+                }
+                res = new { success = true };
+            }
+            catch (Exception ex)
+            {
+                res = new { success = false, message = ex.Message };
+            }
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult GetTasks()
         {
 
@@ -53,7 +80,7 @@ namespace zugo1.Controllers
                 {
                     conn.Open();
                     SqlTransaction trans = conn.BeginTransaction();
-                    string insertSql = $@"Select * from Task";
+                    string insertSql = $@"Select * from Task order by taskDate desc";
                     using (SqlCommand cmd = new SqlCommand(insertSql, conn, trans))
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
@@ -64,7 +91,7 @@ namespace zugo1.Controllers
                             {
                                 id = Convert.ToInt32(dr["id"]),
                                 taskDescription = dr["taskDescription"] == DBNull.Value ? "" : dr["taskDescription"].ToString(),
-                                taskDate = dr["taskDate"] == DBNull.Value ? "" : dr["taskDate"].ToString(),
+                                taskDate = dr["taskDate"] == DBNull.Value ? "" : Convert.ToDateTime(dr["taskDate"]).ToString("dd-MM-yyyy"),
                             });
                         }
 
@@ -77,7 +104,7 @@ namespace zugo1.Controllers
             {
                 res = new { success = false, message = ex.Message };
             }
-            return Json(res,JsonRequestBehavior.AllowGet);
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
     }
 }
